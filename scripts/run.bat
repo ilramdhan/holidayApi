@@ -23,10 +23,10 @@ echo Server: http://localhost:8080
 echo Swagger: http://localhost:8080/swagger/index.html
 echo Health: http://localhost:8080/health
 echo.
-echo 🔐 Default Admin Credentials:
-echo Username: admin
-echo Password: Admin123!
-echo Role: super_admin
+echo 🔐 Admin Setup Required:
+echo Please create admin user via database or API
+echo See docs/DEPLOYMENT.md for secure setup
+echo Default credentials have been removed for security
 echo.
 echo 📚 Quick Start:
 echo 1. Login: POST /api/v1/auth/login

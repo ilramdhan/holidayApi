@@ -50,10 +50,10 @@ BEGIN
 END;
 
 -- Insert default super admin user
--- Username: admin, Password: Admin123!
--- Password hash generated with bcrypt cost 10
+-- NOTE: Change default credentials immediately after first deployment
+-- Default username: admin, Default password: CHANGE_ME_IMMEDIATELY
 INSERT INTO users (username, email, password, role, is_active) VALUES
-('admin', 'admin@holidayapi.com', '$2a$10$5CSA5nVl0AIWBwCeuwp8VuT50yBt6OqxhHIkYmIj7Tsy60/LCJzxi', 'super_admin', TRUE);
+('admin', 'admin@example.com', '$2a$10$PLACEHOLDER_HASH_CHANGE_AFTER_DEPLOYMENT', 'super_admin', TRUE);
 
 -- Log the initial setup
 INSERT INTO audit_logs (user_id, username, action, resource, details, ip_address, success) VALUES 

@@ -78,20 +78,19 @@ docker-compose up --build
 - **Swagger Documentation**: http://localhost:8080/swagger/index.html
 - **Health Check**: http://localhost:8080/health
 
-5. **Default Admin Credentials**
-```
-Username: admin
-Password: Admin123!
-Role: super_admin
+5. **Setup Admin User**
+```bash
+# First, create your admin user via API or database
+# See DEPLOYMENT.md for secure setup instructions
 ```
 
-6. **First Login & Get JWT Token**
+6. **Login & Get JWT Token**
 ```bash
 curl -X POST "http://localhost:8080/api/v1/auth/login" \
   -H "Content-Type: application/json" \
   -d '{
-    "username": "admin",
-    "password": "Admin123!"
+    "username": "your-admin-username",
+    "password": "your-secure-password"
   }'
 ```
 
