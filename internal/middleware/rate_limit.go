@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 	"sync"
 	"time"
@@ -70,8 +71,13 @@ func (rl *RateLimiter) cleanupVisitors() {
 // RateLimitMiddleware returns a rate limiting middleware
 func (rl *RateLimiter) RateLimitMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ip := c.ClientIP()
-		limiter := rl.getVisitor(ip)
+		// Use user ID if authenticated, otherwise use IP
+		identifier := c.ClientIP()
+		if userID, exists := c.Get("user_id"); exists {
+			identifier = fmt.Sprintf("user_%d", userID.(int))
+		}
+
+		limiter := rl.getVisitor(identifier)
 
 		if !limiter.Allow() {
 			c.JSON(http.StatusTooManyRequests, models.ErrorResponse{

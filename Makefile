@@ -44,6 +44,9 @@ dev: create-dirs
 	MIGRATIONS_PATH=./migrations \
 	RATE_LIMIT_RPM=60 \
 	RATE_LIMIT_BURST=10 \
+	JWT_SECRET_KEY=super-secret-jwt-key-for-development \
+	JWT_ACCESS_TOKEN_TTL=15m \
+	JWT_REFRESH_TOKEN_TTL=168h \
 	ADMIN_API_KEY=admin-secret-key \
 	go run cmd/server/main.go
 

@@ -1,6 +1,6 @@
-# Holiday API Indonesia - Documentation
+# Holiday API Indonesia - API Documentation
 
-API untuk mendapatkan informasi hari libur nasional dan cuti bersama Indonesia berdasarkan SKB 3 Menteri.
+API untuk mendapatkan informasi hari libur nasional dan cuti bersama Indonesia berdasarkan SKB 3 Menteri dengan sistem authentication JWT yang lengkap.
 
 ## Base URL
 ```
@@ -9,7 +9,23 @@ http://localhost:8080/api/v1
 
 ## Authentication
 
-Admin endpoints memerlukan API Key yang dikirim melalui header:
+### JWT Authentication (Recommended)
+API menggunakan JWT (JSON Web Token) untuk authentication. Setelah login, Anda akan mendapatkan access token dan refresh token.
+
+**Authorization Header:**
+```
+Authorization: Bearer YOUR_ACCESS_TOKEN
+```
+
+### Default Admin Credentials
+```
+Username: admin
+Password: Admin123!
+Role: super_admin
+```
+
+### Legacy API Key (Backward Compatibility)
+Admin endpoints juga masih mendukung API Key untuk backward compatibility:
 ```
 X-API-Key: your-admin-api-key
 ```
@@ -22,7 +38,87 @@ X-API-Key: your-admin-api-key
 
 ## Endpoints
 
-### Public Endpoints
+### Authentication Endpoints
+
+#### Login
+```http
+POST /api/v1/auth/login
+```
+
+**Request Body:**
+```json
+{
+  "username": "admin",
+  "password": "Admin123!"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "user": {
+      "id": 1,
+      "username": "admin",
+      "email": "admin@holidayapi.com",
+      "role": "super_admin"
+    },
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "expires_in": 900,
+    "token_type": "Bearer"
+  }
+}
+```
+
+#### Refresh Token
+```http
+POST /api/v1/auth/refresh
+```
+
+**Request Body:**
+```json
+{
+  "refresh_token": "your-refresh-token"
+}
+```
+
+#### Get Profile (JWT Required)
+```http
+GET /api/v1/auth/profile
+```
+
+#### Change Password (JWT Required)
+```http
+POST /api/v1/auth/change-password
+```
+
+**Request Body:**
+```json
+{
+  "current_password": "Admin123!",
+  "new_password": "NewPassword123!"
+}
+```
+
+#### Register New User (Super Admin Only)
+```http
+POST /api/v1/auth/register
+```
+
+**Request Body:**
+```json
+{
+  "username": "newadmin",
+  "email": "newadmin@holidayapi.com",
+  "password": "NewAdmin123!",
+  "role": "admin"
+}
+```
+
+### Public Endpoints (No Authentication Required)
 
 #### 1. Get All Holidays
 ```http
@@ -101,7 +197,7 @@ GET /api/v1/holidays/upcoming
 - `limit` (int, optional): Limit results (default: 10)
 - `type` (string, optional): Filter by type
 
-### Admin Endpoints (Protected)
+### Admin Endpoints (JWT Required - Admin/Super Admin)
 
 #### 1. Create Holiday
 ```http
@@ -110,7 +206,7 @@ POST /api/v1/admin/holidays
 
 **Headers:**
 ```
-X-API-Key: your-admin-api-key
+Authorization: Bearer YOUR_ACCESS_TOKEN
 Content-Type: application/json
 ```
 
@@ -131,7 +227,7 @@ PUT /api/v1/admin/holidays/{id}
 
 **Headers:**
 ```
-X-API-Key: your-admin-api-key
+Authorization: Bearer YOUR_ACCESS_TOKEN
 Content-Type: application/json
 ```
 
@@ -151,7 +247,37 @@ DELETE /api/v1/admin/holidays/{id}
 
 **Headers:**
 ```
-X-API-Key: your-admin-api-key
+Authorization: Bearer YOUR_ACCESS_TOKEN
+```
+
+#### 4. Get Audit Logs (Admin Only)
+```http
+GET /api/v1/admin/audit-logs
+```
+
+**Headers:**
+```
+Authorization: Bearer YOUR_ACCESS_TOKEN
+```
+
+**Query Parameters:**
+- `user_id` (int, optional): Filter by user ID
+- `action` (string, optional): Filter by action type
+- `resource` (string, optional): Filter by resource type
+- `success` (bool, optional): Filter by success status
+- `start_date` (string, optional): Start date (YYYY-MM-DD)
+- `end_date` (string, optional): End date (YYYY-MM-DD)
+- `limit` (int, optional): Limit results (default: 50, max: 100)
+- `offset` (int, optional): Offset for pagination (default: 0)
+
+#### 5. Get User Audit Logs (Admin Only)
+```http
+GET /api/v1/admin/audit-logs/user/{id}
+```
+
+**Headers:**
+```
+Authorization: Bearer YOUR_ACCESS_TOKEN
 ```
 
 ## Response Format

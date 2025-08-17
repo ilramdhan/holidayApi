@@ -4,17 +4,27 @@ API untuk mendapatkan informasi hari libur nasional dan cuti bersama Indonesia b
 
 ## ✨ Features
 
+### 🔐 **Authentication & Security**
+- ✅ **JWT Authentication** dengan access & refresh tokens
+- ✅ **Role-Based Access Control (RBAC)** - Super Admin & Admin roles
+- ✅ **User Management** - Registration, login, profile management
+- ✅ **Password Security** - Bcrypt hashing dengan password policy
+- ✅ **Comprehensive Audit Logging** - Track semua user actions
+- ✅ **Security Headers** - XSS, CSRF, Content Security Policy protection
+- ✅ **Input Sanitization** - Protection dari injection attacks
+- ✅ **Enhanced Rate Limiting** - Per-user rate limiting
+
+### 🚀 **API Features**
 - ✅ **REST API** dengan versioning (v1)
-- ✅ **CRUD operations** untuk admin
+- ✅ **CRUD operations** untuk admin (JWT protected)
 - ✅ **Filter berdasarkan jenis** holiday (libur nasional, cuti bersama, atau keduanya)
 - ✅ **Filter berdasarkan periode** (tahun, bulan, hari)
-- ✅ **Rate limiting** (60 requests/minute)
-- ✅ **Swagger documentation**
+- ✅ **Swagger documentation** dengan authentication
 - ✅ **SQLite database** (pure Go, no CGO required)
-- ✅ **Comprehensive logging**
-- ✅ **Input validation**
-- ✅ **Docker support**
-- ✅ **Unit & Integration tests**
+- ✅ **Comprehensive logging** dengan structured format
+- ✅ **Input validation** dengan custom validators
+- ✅ **Docker support** dengan production-ready configuration
+- ✅ **Unit & Integration tests** dengan mocking
 
 ## 🚀 Quick Start
 
@@ -68,22 +78,62 @@ docker-compose up --build
 - **Swagger Documentation**: http://localhost:8080/swagger/index.html
 - **Health Check**: http://localhost:8080/health
 
+5. **Default Admin Credentials**
+```
+Username: admin
+Password: Admin123!
+Role: super_admin
+```
+
+6. **First Login & Get JWT Token**
+```bash
+curl -X POST "http://localhost:8080/api/v1/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "admin",
+    "password": "Admin123!"
+  }'
+```
+
 ## 📋 API Endpoints
 
-### Public Endpoints
-- `GET /api/v1/holidays` - Get all holidays with filters
-- `GET /api/v1/holidays/year/{year}` - Get holidays by year
-- `GET /api/v1/holidays/month/{year}/{month}` - Get holidays by month
-- `GET /api/v1/holidays/today` - Get today's holiday (if any)
-- `GET /api/v1/holidays/this-year` - Get holidays for current year
-- `GET /api/v1/holidays/this-month` - Get holidays for current month
-- `GET /api/v1/holidays/upcoming` - Get upcoming holidays
+### 🔓 **Public Endpoints (No Authentication Required)**
+```
+GET /api/v1/holidays                    - Get all holidays with filters
+GET /api/v1/holidays/year/{year}        - Get holidays by year
+GET /api/v1/holidays/month/{year}/{month} - Get holidays by month
+GET /api/v1/holidays/today              - Get today's holiday (if any)
+GET /api/v1/holidays/this-year          - Get holidays for current year
+GET /api/v1/holidays/this-month         - Get holidays for current month
+GET /api/v1/holidays/upcoming           - Get upcoming holidays
+GET /health                             - Health check endpoint
+```
 
-### Admin Endpoints (Protected)
-- `POST /api/v1/admin/holidays` - Create new holiday
-- `GET /api/v1/admin/holidays/{id}` - Get holiday by ID
-- `PUT /api/v1/admin/holidays/{id}` - Update holiday
-- `DELETE /api/v1/admin/holidays/{id}` - Delete holiday
+### 🔐 **Authentication Endpoints**
+```
+POST /api/v1/auth/login                 - User login (get JWT tokens)
+POST /api/v1/auth/refresh               - Refresh access token
+GET  /api/v1/auth/profile               - Get user profile (JWT required)
+POST /api/v1/auth/change-password       - Change password (JWT required)
+GET  /api/v1/auth/audit-logs            - Get my audit logs (JWT required)
+```
+
+### 👑 **Super Admin Only Endpoints**
+```
+POST /api/v1/auth/register              - Register new user
+GET  /api/v1/auth/users                 - Get all users
+DELETE /api/v1/auth/users/{id}          - Delete user
+```
+
+### 🛡️ **Admin Endpoints (JWT Required - Admin/Super Admin)**
+```
+POST /api/v1/admin/holidays             - Create new holiday
+GET  /api/v1/admin/holidays/{id}        - Get holiday by ID
+PUT  /api/v1/admin/holidays/{id}        - Update holiday
+DELETE /api/v1/admin/holidays/{id}      - Delete holiday
+GET  /api/v1/admin/audit-logs           - Get all audit logs
+GET  /api/v1/admin/audit-logs/user/{id} - Get user audit logs
+```
 
 ## 🔧 Configuration
 
@@ -97,35 +147,99 @@ Environment variables:
 | `MIGRATIONS_PATH` | `./migrations` | Database migrations path |
 | `RATE_LIMIT_RPM` | `60` | Rate limit requests per minute |
 | `RATE_LIMIT_BURST` | `10` | Rate limit burst size |
-| `ADMIN_API_KEY` | `admin-secret-key` | Admin API key |
+| `JWT_SECRET_KEY` | `your-secret-key` | JWT signing secret key |
+| `JWT_ACCESS_TOKEN_TTL` | `15m` | Access token expiration time |
+| `JWT_REFRESH_TOKEN_TTL` | `168h` | Refresh token expiration time (7 days) |
+| `ADMIN_API_KEY` | `admin-secret-key` | Legacy admin API key (backward compatibility) |
 
 ## 📖 Usage Examples
 
-### Get all holidays for 2024
+### 🔓 **Public API Usage (No Authentication)**
+
+#### Get all holidays for 2024
 ```bash
 curl "http://localhost:8080/api/v1/holidays/year/2024"
 ```
 
-### Get only national holidays for 2024
+#### Get only national holidays for 2024
 ```bash
 curl "http://localhost:8080/api/v1/holidays/year/2024?type=national"
 ```
 
-### Get today's holiday
+#### Get today's holiday
 ```bash
 curl "http://localhost:8080/api/v1/holidays/today"
 ```
 
-### Create a new holiday (Admin)
+### 🔐 **Authentication Examples**
+
+#### 1. Login and get JWT tokens
 ```bash
+curl -X POST "http://localhost:8080/api/v1/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "admin",
+    "password": "Admin123!"
+  }'
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "user": {
+      "id": 1,
+      "username": "admin",
+      "role": "super_admin"
+    },
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "expires_in": 900,
+    "token_type": "Bearer"
+  }
+}
+```
+
+#### 2. Use JWT token for admin operations
+```bash
+# Save the access_token from login response
+ACCESS_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+# Create a new holiday
 curl -X POST "http://localhost:8080/api/v1/admin/holidays" \
-  -H "X-API-Key: admin-secret-key" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Hari Libur Khusus",
     "date": "2024-12-31",
     "type": "national",
     "description": "Hari libur khusus akhir tahun"
+  }'
+```
+
+#### 3. Get user profile
+```bash
+curl -X GET "http://localhost:8080/api/v1/auth/profile" \
+  -H "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+#### 4. View audit logs
+```bash
+curl -X GET "http://localhost:8080/api/v1/admin/audit-logs" \
+  -H "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+#### 5. Register new user (Super Admin only)
+```bash
+curl -X POST "http://localhost:8080/api/v1/auth/register" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "newadmin",
+    "email": "newadmin@holidayapi.com",
+    "password": "NewAdmin123!",
+    "role": "admin"
   }'
 ```
 
@@ -184,12 +298,28 @@ docker run -p 8080:8080 holidayapi
 - **API Documentation**: Available at `/swagger/index.html` when server is running
 - **Detailed API Guide**: See [docs/API.md](docs/API.md)
 
-## 🔒 Security
+## 🔒 Security Features
 
-- **Rate Limiting**: 60 requests per minute per IP
-- **Admin Authentication**: API key required for admin endpoints
-- **Input Validation**: All inputs are validated
-- **CORS**: Configured for cross-origin requests
+### 🛡️ **Authentication & Authorization**
+- **JWT Authentication**: Secure token-based authentication
+- **Role-Based Access Control**: Super Admin, Admin roles with different permissions
+- **Password Security**: Bcrypt hashing with strong password policy
+- **Token Management**: Access tokens (15min) + Refresh tokens (7 days)
+- **Session Security**: Secure token validation and refresh mechanism
+
+### 🔐 **Security Middleware**
+- **Security Headers**: XSS protection, CSRF protection, Content Security Policy
+- **Input Sanitization**: Protection from XSS and injection attacks
+- **SQL Injection Protection**: Pattern detection and prevention
+- **Rate Limiting**: 60 requests per minute per user/IP
+- **CORS Protection**: Proper cross-origin resource sharing
+- **Request Validation**: Comprehensive input validation
+
+### 📊 **Audit & Monitoring**
+- **Comprehensive Audit Logging**: All user actions tracked
+- **Security Events**: Login attempts, failed authentications
+- **User Activity**: CRUD operations, system access
+- **Audit Trail**: User, IP, User-Agent, timestamp, success/failure status
 
 ## 🎯 Holiday Types
 

@@ -1,7 +1,7 @@
 // Package main provides the entry point for the Holiday API server
 // @title Holiday API Indonesia
-// @version 1.0
-// @description API untuk mendapatkan informasi hari libur nasional dan cuti bersama Indonesia berdasarkan SKB 3 Menteri
+// @version 2.0
+// @description API untuk mendapatkan informasi hari libur nasional dan cuti bersama Indonesia berdasarkan SKB 3 Menteri dengan sistem authentication JWT yang lengkap
 // @termsOfService http://swagger.io/terms/
 
 // @contact.name API Support
@@ -17,7 +17,12 @@
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name X-API-Key
-// @description Admin API Key for protected endpoints
+// @description Legacy Admin API Key for backward compatibility
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description JWT Bearer Token. Format: Bearer {token}
 
 package main
 
@@ -31,6 +36,7 @@ import (
 	"syscall"
 	"time"
 
+	_ "holidayapi/docs" // Import for swagger docs
 	"holidayapi/internal/config"
 	"holidayapi/internal/database"
 	"holidayapi/internal/handlers"
@@ -54,14 +60,19 @@ func main() {
 		log.Fatalf("Failed to run migrations: %v", err)
 	}
 
-	// Initialize repository
+	// Initialize repositories
 	holidayRepo := repository.NewHolidayRepository(db.DB)
+	userRepo := repository.NewUserRepository(db.DB)
+	auditRepo := repository.NewAuditRepository(db.DB)
 
-	// Initialize service
+	// Initialize services
+	jwtService := services.NewJWTService(cfg.JWT.SecretKey, cfg.JWT.AccessTokenTTL, cfg.JWT.RefreshTokenTTL)
+	auditService := services.NewAuditService(auditRepo)
+	authService := services.NewAuthService(userRepo, auditRepo, jwtService)
 	holidayService := services.NewHolidayService(holidayRepo)
 
 	// Setup router
-	router := handlers.SetupRouter(cfg, holidayService)
+	router := handlers.SetupRouter(cfg, holidayService, authService, jwtService, auditService)
 
 	// Create HTTP server
 	server := &http.Server{
@@ -76,7 +87,7 @@ func main() {
 	go func() {
 		log.Printf("Starting server on %s:%s", cfg.Server.Host, cfg.Server.Port)
 		log.Printf("Swagger documentation available at: http://%s:%s/swagger/index.html", cfg.Server.Host, cfg.Server.Port)
-		
+
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Failed to start server: %v", err)
 		}

@@ -8,10 +8,11 @@ import (
 
 // Config holds application configuration
 type Config struct {
-	Server   ServerConfig
-	Database DatabaseConfig
+	Server    ServerConfig
+	Database  DatabaseConfig
 	RateLimit RateLimitConfig
-	Admin    AdminConfig
+	Admin     AdminConfig
+	JWT       JWTConfig
 }
 
 // ServerConfig holds server configuration
@@ -25,7 +26,7 @@ type ServerConfig struct {
 
 // DatabaseConfig holds database configuration
 type DatabaseConfig struct {
-	Path string
+	Path           string
 	MigrationsPath string
 }
 
@@ -38,6 +39,13 @@ type RateLimitConfig struct {
 // AdminConfig holds admin configuration
 type AdminConfig struct {
 	APIKey string
+}
+
+// JWTConfig holds JWT configuration
+type JWTConfig struct {
+	SecretKey       string
+	AccessTokenTTL  time.Duration
+	RefreshTokenTTL time.Duration
 }
 
 // Load loads configuration from environment variables
@@ -60,6 +68,11 @@ func Load() *Config {
 		},
 		Admin: AdminConfig{
 			APIKey: getEnv("ADMIN_API_KEY", "admin-secret-key-change-in-production"),
+		},
+		JWT: JWTConfig{
+			SecretKey:       getEnv("JWT_SECRET_KEY", "your-super-secret-jwt-key-change-in-production"),
+			AccessTokenTTL:  getDurationEnv("JWT_ACCESS_TOKEN_TTL", 15*time.Minute),
+			RefreshTokenTTL: getDurationEnv("JWT_REFRESH_TOKEN_TTL", 7*24*time.Hour), // 7 days
 		},
 	}
 }
