@@ -19,8 +19,17 @@ vendor/
 # Go workspace file
 go.work
 
-# Environment variables
+# Environment variables and secrets
 .env
+.env.local
+.env.production
+.env.staging
+*.key
+*.pem
+*.p12
+credentials.json
+secrets.json
+admin-setup.sql
 
 # Database files
 *.db
