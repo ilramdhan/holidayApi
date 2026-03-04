@@ -36,12 +36,12 @@ import (
 	"syscall"
 	"time"
 
-	_ "holidayapi/docs" // Import for swagger docs
-	"holidayapi/internal/config"
-	"holidayapi/internal/database"
-	"holidayapi/internal/handlers"
-	"holidayapi/internal/repository"
-	"holidayapi/internal/services"
+	_ "github.com/ilramdhan/holidayapi/docs" // Import for swagger docs
+	"github.com/ilramdhan/holidayapi/internal/config"
+	"github.com/ilramdhan/holidayapi/internal/database"
+	"github.com/ilramdhan/holidayapi/internal/handlers"
+	"github.com/ilramdhan/holidayapi/internal/repository"
+	"github.com/ilramdhan/holidayapi/internal/services"
 )
 
 func main() {

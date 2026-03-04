@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
-	"holidayapi/internal/models"
+	"github.com/ilramdhan/holidayapi/internal/models"
 )
 
 // MockHolidayRepository is a mock implementation of HolidayRepository

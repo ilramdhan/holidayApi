@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"holidayapi/internal/models"
+	"github.com/ilramdhan/holidayapi/internal/models"
 )
 
 // AuditRepository interface defines audit log data access methods

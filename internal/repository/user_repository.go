@@ -7,7 +7,7 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"holidayapi/internal/models"
+	"github.com/ilramdhan/holidayapi/internal/models"
 )
 
 // UserRepository interface defines user data access methods

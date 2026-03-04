@@ -7,8 +7,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"holidayapi/internal/models"
-	"holidayapi/internal/services"
+	"github.com/ilramdhan/holidayapi/internal/models"
+	"github.com/ilramdhan/holidayapi/internal/services"
 )
 
 // JWTAuthMiddleware validates JWT tokens

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"holidayapi/internal/models"
-	"holidayapi/internal/repository"
+	"github.com/ilramdhan/holidayapi/internal/models"
+	"github.com/ilramdhan/holidayapi/internal/repository"
 )
 
 // UserRepository interface (forward declaration)

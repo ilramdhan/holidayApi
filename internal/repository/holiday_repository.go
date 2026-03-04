@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"holidayapi/internal/models"
+	"github.com/ilramdhan/holidayapi/internal/models"
 )
 
 // HolidayRepository interface defines holiday data access methods

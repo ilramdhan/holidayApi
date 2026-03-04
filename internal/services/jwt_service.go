@@ -6,7 +6,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 
-	"holidayapi/internal/models"
+	"github.com/ilramdhan/holidayapi/internal/models"
 )
 
 // JWTService handles JWT token operations

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"holidayapi/internal/models"
-	"holidayapi/internal/repository"
+	"github.com/ilramdhan/holidayapi/internal/models"
+	"github.com/ilramdhan/holidayapi/internal/repository"
 )
 
 // HolidayService interface defines holiday business logic methods

@@ -5,9 +5,9 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
-	"holidayapi/internal/config"
-	"holidayapi/internal/middleware"
-	"holidayapi/internal/services"
+	"github.com/ilramdhan/holidayapi/internal/config"
+	"github.com/ilramdhan/holidayapi/internal/middleware"
+	"github.com/ilramdhan/holidayapi/internal/services"
 )
 
 // SetupRouter sets up the HTTP router with all routes and middleware
