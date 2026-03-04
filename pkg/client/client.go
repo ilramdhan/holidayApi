@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 	"time"
 )
 
@@ -102,10 +101,10 @@ func (c *Client) GetHolidays(ctx context.Context, year, month *int, holidayType 
 
 	q := req.URL.Query()
 	if year != nil {
-		q.Add("year", strconv.Itoa(*year))
+		q.Add("year", fmt.Sprintf("%d", *year))
 	}
 	if month != nil {
-		q.Add("month", strconv.Itoa(*month))
+		q.Add("month", fmt.Sprintf("%d", *month))
 	}
 	if holidayType != "" {
 		q.Add("type", holidayType)

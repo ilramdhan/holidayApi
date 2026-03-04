@@ -90,17 +90,17 @@ func (r *holidayRepository) GetAll(filter models.HolidayFilter) ([]models.Holida
 
 	if filter.Year != nil {
 		whereConditions = append(whereConditions, "strftime('%Y', date) = ?")
-		args = append(args, strconv.Itoa(*filter.Year))
+		args = append(args, fmt.Sprintf("%d", *filter.Year))
 	}
 
 	if filter.Month != nil {
 		whereConditions = append(whereConditions, "strftime('%m', date) = ?")
-		args = append(args, strconv.Itoa(*filter.Month))
+		args = append(args, fmt.Sprintf("%02d", *filter.Month))
 	}
 
 	if filter.Day != nil {
 		whereConditions = append(whereConditions, "strftime('%d', date) = ?")
-		args = append(args, strconv.Itoa(*filter.Day))
+		args = append(args, fmt.Sprintf("%02d", *filter.Day))
 	}
 
 	if filter.Type != nil {
