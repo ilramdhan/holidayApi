@@ -1,0 +1,21 @@
+{
+  "name": "holidayapi-nodejs-example",
+  "version": "1.0.0",
+  "description": "Example Node.js client for Holiday API Indonesia",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "holiday",
+    "api",
+    "indonesia",
+    "client"
+  ],
+  "author": "Ilham Ramadhan",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

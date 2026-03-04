@@ -1,0 +1,453 @@
+{
+  "info": {
+    "_postman_id": "holidayapi-indonesia-v1",
+    "name": "Holiday API Indonesia",
+    "description": "Production-ready REST API for Indonesian National Holidays & Joint Leave Days. Based on official SKB 3 Menteri regulations.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Public Endpoints",
+      "description": "Endpoints that don't require authentication",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Check if the API is healthy and running"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Holidays",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/holidays?year=2024&type=national&limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "holidays"],
+              "query": [
+                {
+                  "key": "year",
+                  "value": "2024",
+                  "description": "Filter by year"
+                },
+                {
+                  "key": "month",
+                  "value": "",
+                  "description": "Filter by month (1-12)",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "national",
+                  "description": "Filter by type: national, collective_leave"
+                },
+                {
+                  "key": "limit",
+                  "value": "50",
+                  "description": "Limit results (max 100)"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Offset for pagination"
+                }
+              ]
+            },
+            "description": "Get holidays with optional filters"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Holidays by Year",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/holidays/year/2024",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "holidays", "year", "2024"]
+            },
+            "description": "Get all holidays for a specific year"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Holidays by Month",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/holidays/month/2024/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "holidays", "month", "2024", "1"]
+            },
+            "description": "Get holidays for a specific year and month"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Today's Holiday",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/holidays/today",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "holidays", "today"]
+            },
+            "description": "Get today's holiday if any"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Holidays This Year",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/holidays/this-year",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "holidays", "this-year"]
+            },
+            "description": "Get holidays for the current year"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Holidays This Month",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/holidays/this-month",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "holidays", "this-month"]
+            },
+            "description": "Get holidays for the current month"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Upcoming Holidays",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/holidays/upcoming?limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "holidays", "upcoming"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of upcoming holidays to return"
+                }
+              ]
+            },
+            "description": "Get upcoming holidays"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "description": "Authentication endpoints",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"Admin123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "login"]
+            },
+            "description": "Login to get JWT access and refresh tokens"
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "refresh"]
+            },
+            "description": "Refresh access token using refresh token"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/profile",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "profile"]
+            },
+            "description": "Get current user profile (requires JWT)"
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"old_password\": \"Admin123!\",\n  \"new_password\": \"NewPassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/change-password",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "change-password"]
+            },
+            "description": "Change user password (requires JWT)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/audit-logs",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "audit-logs"]
+            },
+            "description": "Get audit logs for current user (requires JWT)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin Endpoints",
+      "description": "Admin endpoints requiring JWT authentication",
+      "item": [
+        {
+          "name": "Create Holiday",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2024-12-25\",\n  \"name\": \"Hari Raya Natal\",\n  \"type\": \"national\",\n  \"description\": \"Perayaan kelahiran Yesus Kristus\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/holidays",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "holidays"]
+            },
+            "description": "Create a new holiday (Admin/Super Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Holiday by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/holidays/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "holidays", "1"]
+            },
+            "description": "Get a specific holiday by ID (Admin/Super Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Holiday",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2024-12-25\",\n  \"name\": \"Hari Raya Natal\",\n  \"type\": \"national\",\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/holidays/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "holidays", "1"]
+            },
+            "description": "Update an existing holiday (Admin/Super Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Holiday",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/holidays/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "holidays", "1"]
+            },
+            "description": "Delete a holiday (Admin/Super Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/admin/audit-logs",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "admin", "audit-logs"]
+            },
+            "description": "Get all audit logs (Super Admin only)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string",
+      "description": "Base URL for the API"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT access token (obtained from login)"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT refresh token (obtained from login)"
+    }
+  ]
+}
