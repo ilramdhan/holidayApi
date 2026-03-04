@@ -7,9 +7,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"holidayapi/internal/middleware"
-	"holidayapi/internal/models"
-	"holidayapi/internal/services"
+	"github.com/ilramdhan/holidayapi/internal/middleware"
+	"github.com/ilramdhan/holidayapi/internal/models"
+	"github.com/ilramdhan/holidayapi/internal/services"
 )
 
 // AuditHandler handles audit-related HTTP requests

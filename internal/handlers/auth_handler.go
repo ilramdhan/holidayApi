@@ -7,9 +7,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 
-	"holidayapi/internal/middleware"
-	"holidayapi/internal/models"
-	"holidayapi/internal/services"
+	"github.com/ilramdhan/holidayapi/internal/middleware"
+	"github.com/ilramdhan/holidayapi/internal/models"
+	"github.com/ilramdhan/holidayapi/internal/services"
 )
 
 // AuthHandler handles authentication-related HTTP requests

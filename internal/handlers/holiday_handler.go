@@ -7,8 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 
-	"holidayapi/internal/models"
-	"holidayapi/internal/services"
+	"github.com/ilramdhan/holidayapi/internal/models"
+	"github.com/ilramdhan/holidayapi/internal/services"
 )
 
 // HolidayHandler handles holiday-related HTTP requests

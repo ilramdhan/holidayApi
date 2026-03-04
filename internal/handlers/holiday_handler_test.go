@@ -12,8 +12,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
-	"holidayapi/internal/models"
-	"holidayapi/internal/services"
+	"github.com/ilramdhan/holidayapi/internal/models"
+	"github.com/ilramdhan/holidayapi/internal/services"
 )
 
 // MockHolidayService is a mock implementation of HolidayService

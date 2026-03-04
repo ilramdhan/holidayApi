@@ -1,4 +1,4 @@
-module holidayapi
+module github.com/ilramdhan/holidayapi
 
 go 1.23.0
 
