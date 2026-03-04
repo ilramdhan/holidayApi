@@ -210,7 +210,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"Admin123!\"\n}"
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/auth/login",
@@ -279,7 +279,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"old_password\": \"Admin123!\",\n  \"new_password\": \"NewPassword123!\"\n}"
+              "raw": "{\n  \"old_password\": \"{{old_password}}\",\n  \"new_password\": \"{{new_password}}\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/auth/change-password",

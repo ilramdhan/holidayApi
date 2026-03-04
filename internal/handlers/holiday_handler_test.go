@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"bytes"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -13,7 +12,6 @@ import (
 	"github.com/stretchr/testify/mock"
 
 	"github.com/ilramdhan/holidayapi/internal/models"
-	"github.com/ilramdhan/holidayapi/internal/services"
 )
 
 // MockHolidayService is a mock implementation of HolidayService
