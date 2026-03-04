@@ -93,7 +93,7 @@ func (s *authService) Login(req models.LoginRequest, ipAddress, userAgent string
 
 	// Log successful login
 	s.logAudit(&user.ID, user.Username, models.ActionLogin, models.ResourceAuth,
-		fmt.Sprintf("User logged in successfully"), ipAddress, userAgent, true)
+		"User logged in successfully", ipAddress, userAgent, true)
 
 	return authResponse, nil
 }
