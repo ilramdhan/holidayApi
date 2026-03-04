@@ -171,7 +171,17 @@ func (s *holidayService) GetUpcomingHolidays(limit int) ([]models.Holiday, error
 	today := time.Now()
 	endDate := today.AddDate(1, 0, 0) // Next year
 	
-	return s.repo.GetByDateRange(today, endDate, nil)
+	holidays, err := s.repo.GetByDateRange(today, endDate, nil)
+	if err != nil {
+		return nil, err
+	}
+	
+	// Apply limit
+	if len(holidays) > limit {
+		holidays = holidays[:limit]
+	}
+	
+	return holidays, nil
 }
 
 // GetHolidaysByYear gets holidays by specific year
