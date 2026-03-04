@@ -267,10 +267,12 @@ JWT_REFRESH_TOKEN_TTL=168h
 ### Cloud Deployment
 
 #### Railway
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/your-template-id)
+> **Note:** Railway telah menghentikan dukungan untuk template deployment gratis. Silakan gunakan opsi lain di bawah ini atau deploy secara manual.
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new)
 
 #### Render
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ilramdhan/holidayapi)
 
 #### Fly.io
 ```bash
