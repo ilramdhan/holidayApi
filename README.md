@@ -544,7 +544,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- 📧 Email: ilramdhan@gmail.com
+- 📧 Email: me@ilramdhan.dev
 - 🐛 Issues: [GitHub Issues](https://github.com/ilramdhan/holidayapi/issues)
 - 💬 Discussions: [GitHub Discussions](https://github.com/ilramdhan/holidayapi/discussions)
 
